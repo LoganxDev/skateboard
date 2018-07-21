@@ -20,7 +20,7 @@ button = 27
 lights_on = 26
 lights_off = 16
 
-wiimote_bluetooth = "00:1F:C5:86:3E:85"
+wiimote_bluetooth = "00:17:AB:34:E4:73"
 powerdown = ["sudo", "shutdown", "now"]
 
 stop_val = False

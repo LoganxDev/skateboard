@@ -3,8 +3,11 @@
 My attempt to recreate and possibly improve upon the electric skateboard from this video: https://www.youtube.com/watch?v=2WLEur3M8Yk
 
 ### Step 1:
+Setup raspberry pi and setup git
 
-Clone the repo
+### Step 2:
+
+Clone the repo onto the raspberry pi
 `git clone git@github.com:LoganxDev/skateboard.git`
 
 ## Parts List
