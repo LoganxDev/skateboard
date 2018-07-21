@@ -116,14 +116,18 @@ class Skateboard(object):
 		
 			if (self.buttons & cwiid.BTN_A):
 				self.arduino_trigger()
+				print("A")
 				
 			if (self.buttons & cwiid.BTN_B):
 				self.speed = 1500
 				time.sleep(0.5)
+				print("B")
 			if (self.buttons & cwiid.BTN_DOWN):
 				self.speed += 1
+				print("DOWN")
 			if (self.buttons & cwiid.BTN_UP):
 				self.speed -= 1
+				print("UP")
 			if (self.buttons & cwiid.BTN_PLUS):
 				Skateboard.accel_sleep += 0.005
 				time.sleep(0.5)
