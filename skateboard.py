@@ -96,7 +96,7 @@ class Skateboard(object):
 				self.wii = cwiid.Wiimote(bdaddr = wiimote_bluetooth)
 				connected = True
 				# self.blinky(40,0.03)
-				# self.wii.rpt_mode = cwiid.RPT_BTN
+				self.wii.rpt_mode = cwiid.RPT_BTN
 				self.wii.rumble = 1
 				time.sleep(1)
 				self.wii.rumble = 0
@@ -160,7 +160,7 @@ class wiimote_watcher(threading.Thread):
 		
 	def run(self):
 		while True:
-			# self.wiimote_check()
+			self.wiimote_check()
 			time.sleep(0.1)
 
 	def try_comms(self):
@@ -181,7 +181,7 @@ class wiimote_watcher(threading.Thread):
 
 	def wiimote_check(self):
 		try:
-			# output = self.try_comms()
+			output = self.try_comms()
 			print output
 			# if (("100% loss") in output) or (output == ""): # If 100% packets lost: wiimote died. If output is null: bluetooth dongle died
 				# self.shutdown()
