@@ -40,14 +40,14 @@ class Skateboard(object):
 	# Initial setup of pins and various values
 	def __init__(self):
 		print("hi")
-		# pi.set_PWM_frequency(motor, 50)
+		pi.set_PWM_frequency(motor, 50)
 		# pi.set_mode(led, pigpio.OUTPUT)
 		# pi.set_mode(button, pigpio.INPUT)
 		# pi.set_mode(lights_on, pigpio.OUTPUT)
 		# pi.set_mode(lights_off, pigpio.OUTPUT)
 		# pi.set_pull_up_down(button, pigpio.PUD_UP)
 		self.__speed = 1500
-		# self.speed = 1500
+		self.speed = 1500
 
 	@property
 	def speed(self):
@@ -108,7 +108,6 @@ class Skateboard(object):
 		global stop_val
 		# pi.write(led, 1)
 		while (stop_val == False):
-			print("Running Process.")
 			self.get_status()
 			# if self.status_button:
 			# 	print("shutdown")
@@ -132,24 +131,22 @@ class Skateboard(object):
 				print("UP")
 			if (self.buttons & cwiid.BTN_PLUS):
 				print("plus")
-				# stop_val = True
-				# Skateboard.accel_sleep += 0.005
-				# time.sleep(0.5)
-				# if Skateboard.accel_sleep >= 0.1:
-				# 	Skateboard.accel_sleep = 0.1
-				# print(Skateboard.accel_sleep)
+				Skateboard.accel_sleep += 0.005
+				time.sleep(0.5)
+				if Skateboard.accel_sleep >= 0.1:
+					Skateboard.accel_sleep = 0.1
+				print(Skateboard.accel_sleep)
 			if (self.buttons & cwiid.BTN_MINUS):
 				print("minus")
-				# Skateboard.accel_sleep -= 0.005
+				Skateboard.accel_sleep -= 0.005
 				time.sleep(0.5)
-				# if Skateboard.accel_sleep <= 0:
-				# 	Skateboard.accel_sleep = 0
-				# print(Skateboard.accel_sleep)
-			# print("Speed is: " + self.speed)
-		# self.speed = 1500 #If the board defaults, set the speed to neutral
+				if Skateboard.accel_sleep <= 0:
+					Skateboard.accel_sleep = 0
+				print(Skateboard.accel_sleep)
+			print("Speed is: " + self.speed)
+		self.speed = 1500 #If the board defaults, set the speed to neutral
 
 	def get_status(self):
-		print("shutdown get_status")
 		self.buttons = self.wii.state['buttons']
 		# self.status_button = not pi.read(button)
 
