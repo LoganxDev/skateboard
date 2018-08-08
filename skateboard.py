@@ -39,14 +39,14 @@ class Skateboard(object):
 
 	# Initial setup of pins and various values
 	def __init__(self):
-		pi.set_PWM_frequency(motor, 50)
-		pi.set_mode(led, pigpio.OUTPUT)
-		pi.set_mode(button, pigpio.INPUT)
-		pi.set_mode(lights_on, pigpio.OUTPUT)
-		pi.set_mode(lights_off, pigpio.OUTPUT)
-		pi.set_pull_up_down(button, pigpio.PUD_UP)
-		self.__speed = 1500
-		self.speed = 1500
+		# pi.set_PWM_frequency(motor, 50)
+		# pi.set_mode(led, pigpio.OUTPUT)
+		# pi.set_mode(button, pigpio.INPUT)
+		# pi.set_mode(lights_on, pigpio.OUTPUT)
+		# pi.set_mode(lights_off, pigpio.OUTPUT)
+		# pi.set_pull_up_down(button, pigpio.PUD_UP)
+		# self.__speed = 1500
+		# self.speed = 1500
 
 	@property
 	def speed(self):
@@ -90,12 +90,12 @@ class Skateboard(object):
 	def connection_process(self):
 		connected = False
 		while not connected:
-			self.blinky(5,0.4)
+			# self.blinky(5,0.4)
 			try:
 				self.wii = cwiid.Wiimote(bdaddr = wiimote_bluetooth)
 				connected = True
-				self.blinky(40,0.03)
-				self.wii.rpt_mode = cwiid.RPT_BTN
+				# self.blinky(40,0.03)
+				# self.wii.rpt_mode = cwiid.RPT_BTN
 				self.wii.rumble = 1
 				time.sleep(1)
 				self.wii.rumble = 0
@@ -105,48 +105,53 @@ class Skateboard(object):
 	# Controller-skateboard interface
 	def run_process(self):
 		global stop_val
-		pi.write(led, 1)
+		# pi.write(led, 1)
 		while (stop_val == False):
 			print("Running Process.")
-			self.get_status()
-			if self.status_button:
-				self.wii.rumble=1
-				time.sleep(2)
-				self.wii.rumble=0
-				raise RuntimeError("Status Button")
+			# self.get_status()
+			# if self.status_button:
+			# 	print("shutdown")
+			# 	self.wii.rumble=1
+			# 	time.sleep(2)
+			# 	self.wii.rumble=0
+			# 	raise RuntimeError("Status Button")
 		
 			if (self.buttons & cwiid.BTN_A):
-				self.arduino_trigger()
+				# self.arduino_trigger()
 				print("A")
 			if (self.buttons & cwiid.BTN_B):
-				self.speed = 1500
+				# self.speed = 1500
 				time.sleep(0.5)
 				print("B")
 			if (self.buttons & cwiid.BTN_DOWN):
-				self.speed += 1
+				# self.speed += 1
 				print("DOWN")
 			if (self.buttons & cwiid.BTN_UP):
 				self.speed -= 1
 				print("UP")
 			if (self.buttons & cwiid.BTN_PLUS):
-				Skateboard.accel_sleep += 0.005
-				time.sleep(0.5)
-				if Skateboard.accel_sleep >= 0.1:
-					Skateboard.accel_sleep = 0.1
-				print(Skateboard.accel_sleep)
+				print("plus")
+				stop_val = True
+				# Skateboard.accel_sleep += 0.005
+				# time.sleep(0.5)
+				# if Skateboard.accel_sleep >= 0.1:
+				# 	Skateboard.accel_sleep = 0.1
+				# print(Skateboard.accel_sleep)
 			if (self.buttons & cwiid.BTN_MINUS):
-				Skateboard.accel_sleep -= 0.005
+				print("minus")
+				# Skateboard.accel_sleep -= 0.005
 				time.sleep(0.5)
-				if Skateboard.accel_sleep <= 0:
-					Skateboard.accel_sleep = 0
-				print(Skateboard.accel_sleep)
+				# if Skateboard.accel_sleep <= 0:
+				# 	Skateboard.accel_sleep = 0
+				# print(Skateboard.accel_sleep)
 			print("Speed is: " + self.speed)
 		print("We stopped ;_;")
-		self.speed = 1500 #If the board defaults, set the speed to neutral
+		# self.speed = 1500 #If the board defaults, set the speed to neutral
 
-	def get_status(self):
-		self.buttons = self.wii.state['buttons']
-		self.status_button = not pi.read(button)
+	# def get_status(self):
+	# 	print("shutdown")
+	# 	self.buttons = self.wii.state['buttons']
+	# 	self.status_button = not pi.read(button)
 
 class wiimote_watcher(threading.Thread):
 	""" A wiimote checking thread class """
@@ -155,7 +160,7 @@ class wiimote_watcher(threading.Thread):
 		
 	def run(self):
 		while True:
-			self.wiimote_check()
+			# self.wiimote_check()
 			time.sleep(0.1)
 
 	def try_comms(self):
@@ -171,37 +176,43 @@ class wiimote_watcher(threading.Thread):
         	if is_debug:
 			print "OFF"
 		else:
+			print("shutdown")
 			subprocess.call(powerdown)
 
 	def wiimote_check(self):
 		try:
-			output = self.try_comms()
+			# output = self.try_comms()
 			print output
-			if (("100% loss") in output) or (output == ""): # If 100% packets lost: wiimote died. If output is null: bluetooth dongle died
-				self.shutdown()
+			# if (("100% loss") in output) or (output == ""): # If 100% packets lost: wiimote died. If output is null: bluetooth dongle died
+				# self.shutdown()
 		except:
-			self.shutdown()			
+			print("shutdown")
+			# self.shutdown()			
 
 ###
 
 def main():
 	# Class instance and program run
 	skate = Skateboard()
-	skate.blinky(20,0.05)
+	# skate.blinky(20,0.05)
 	skate.connection_process()
 	# Wiimote checker thread
 	checker = wiimote_watcher()
+	print("shutdown")
 	checker.daemon = True
 	checker.start()
+	print("shutdown")
 	try:
 		skate.run_process()
 	except KeyboardInterrupt:
 		raise
 	except:
+		print("shutdown")
 		skate.speed = 1500
 		if is_debug:
 			raise
 		else:
+			print("shutdown")
 			subprocess.call(powerdown)
 
 if __name__ == "__main__":
