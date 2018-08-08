@@ -39,13 +39,14 @@ class Skateboard(object):
 
 	# Initial setup of pins and various values
 	def __init__(self):
+		print("hi")
 		# pi.set_PWM_frequency(motor, 50)
 		# pi.set_mode(led, pigpio.OUTPUT)
 		# pi.set_mode(button, pigpio.INPUT)
 		# pi.set_mode(lights_on, pigpio.OUTPUT)
 		# pi.set_mode(lights_off, pigpio.OUTPUT)
 		# pi.set_pull_up_down(button, pigpio.PUD_UP)
-		# self.__speed = 1500
+		self.__speed = 1500
 		# self.speed = 1500
 
 	@property
@@ -176,8 +177,8 @@ class wiimote_watcher(threading.Thread):
         	if is_debug:
 			print "OFF"
 		else:
-			print("shutdown")
-			subprocess.call(powerdown)
+			print("shutdown, shutdown func")
+			# subprocess.call(powerdown)
 
 	def wiimote_check(self):
 		try:
@@ -186,7 +187,7 @@ class wiimote_watcher(threading.Thread):
 			# if (("100% loss") in output) or (output == ""): # If 100% packets lost: wiimote died. If output is null: bluetooth dongle died
 				# self.shutdown()
 		except:
-			print("shutdown")
+			print("shutdown wiimote_check")
 			# self.shutdown()			
 
 ###
@@ -198,22 +199,20 @@ def main():
 	skate.connection_process()
 	# Wiimote checker thread
 	checker = wiimote_watcher()
-	print("shutdown")
 	checker.daemon = True
 	checker.start()
-	print("shutdown")
 	try:
 		skate.run_process()
 	except KeyboardInterrupt:
 		raise
 	except:
-		print("shutdown")
+		print("shutdown main")
 		skate.speed = 1500
 		if is_debug:
 			raise
 		else:
-			print("shutdown")
-			subprocess.call(powerdown)
+			print("shutdown real")
+			# subprocess.call(powerdown)
 
 if __name__ == "__main__":
 	main()
