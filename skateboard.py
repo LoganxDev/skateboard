@@ -145,7 +145,7 @@ class Skateboard(object):
 				# if Skateboard.accel_sleep <= 0:
 				# 	Skateboard.accel_sleep = 0
 				# print(Skateboard.accel_sleep)
-			print("Speed is: " + self.speed)
+			# print("Speed is: " + self.speed)
 		# self.speed = 1500 #If the board defaults, set the speed to neutral
 
 	def get_status(self):
