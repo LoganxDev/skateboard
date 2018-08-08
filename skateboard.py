@@ -120,11 +120,11 @@ class Skateboard(object):
 				# self.arduino_trigger()
 				print("A")
 			if (self.buttons & cwiid.BTN_B):
-				# self.speed = 1500
+				self.speed = 1500
 				time.sleep(0.5)
 				print("B")
 			if (self.buttons & cwiid.BTN_DOWN):
-				# self.speed += 1
+				self.speed += 1
 				print("DOWN")
 			if (self.buttons & cwiid.BTN_UP):
 				self.speed -= 1
@@ -138,12 +138,13 @@ class Skateboard(object):
 				print(Skateboard.accel_sleep)
 			if (self.buttons & cwiid.BTN_MINUS):
 				print("minus")
+				subprocess.call(powerdown)
 				Skateboard.accel_sleep -= 0.005
 				time.sleep(0.5)
 				if Skateboard.accel_sleep <= 0:
 					Skateboard.accel_sleep = 0
 				print(Skateboard.accel_sleep)
-			print("Speed is: " + self.speed)
+			print("Speed is: ", self.speed)
 		self.speed = 1500 #If the board defaults, set the speed to neutral
 
 	def get_status(self):
