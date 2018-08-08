@@ -40,11 +40,11 @@ class Skateboard(object):
 	# Initial setup of pins and various values
 	def __init__(self):
 		pi.set_PWM_frequency(motor, 50)
-		# pi.set_mode(led, pigpio.OUTPUT)
-		# pi.set_mode(button, pigpio.INPUT)
-		# pi.set_mode(lights_on, pigpio.OUTPUT)
-		# pi.set_mode(lights_off, pigpio.OUTPUT)
-		# pi.set_pull_up_down(button, pigpio.PUD_UP)
+		pi.set_mode(led, pigpio.OUTPUT)
+		pi.set_mode(button, pigpio.INPUT)
+		pi.set_mode(lights_on, pigpio.OUTPUT)
+		pi.set_mode(lights_off, pigpio.OUTPUT)
+		pi.set_pull_up_down(button, pigpio.PUD_UP)
 		self.__speed = 1500
 		self.speed = 1500
 
@@ -66,35 +66,35 @@ class Skateboard(object):
 		time.sleep(Skateboard.accel_sleep)
 	
 	# Blinks the ring LED of the power button on electric skateboard
-	# def blinky(self,times,period):
-	# 	for i in range (1,times):
-	# 		pi.write(led,1)
-	# 		time.sleep(period)
-	# 		pi.write(led,0)
-	# 		time.sleep(period)
+	def blinky(self,times,period):
+		for i in range (1,times):
+			pi.write(led,1)
+			time.sleep(period)
+			pi.write(led,0)
+			time.sleep(period)
 
 	# Toggles an Arduino that toggles the neopixels on the bottom of the electric skateboard
-	# def arduino_trigger(self):
-	# 	if Skateboard.indicator_lights_on == 0:
-	# 		pi.write(lights_on,1)
-	# 		Skateboard.indicator_lights_on = 1
-	# 		self.wii.led = 15
-	# 	elif Skateboard.indicator_lights_on == 1:
-	# 		pi.write(lights_off,1)
-	# 		pi.write(lights_on,0)
-	# 		Skateboard.indicator_lights_on = 0
-	# 		self.wii.led = 0
-	# 	time.sleep(0.5) # Let's hope I don't activate this whilst on the board and die from this half second delay
+	def arduino_trigger(self):
+		if Skateboard.indicator_lights_on == 0:
+			pi.write(lights_on,1)
+			Skateboard.indicator_lights_on = 1
+			self.wii.led = 15
+		elif Skateboard.indicator_lights_on == 1:
+			pi.write(lights_off,1)
+			pi.write(lights_on,0)
+			Skateboard.indicator_lights_on = 0
+			self.wii.led = 0
+		time.sleep(0.5) # Let's hope I don't activate this whilst on the board and die from this half second delay
 
 	# Connects to Wiimote with specified mac address
 	def connection_process(self):
 		connected = False
 		while not connected:
-			# self.blinky(5,0.4)
+			self.blinky(5,0.4)
 			try:
 				self.wii = cwiid.Wiimote(bdaddr = wiimote_bluetooth)
 				connected = True
-				# self.blinky(40,0.03)
+				self.blinky(40,0.03)
 				self.wii.rpt_mode = cwiid.RPT_BTN
 				self.wii.rumble = 1
 				time.sleep(1)
@@ -146,7 +146,7 @@ class Skateboard(object):
 
 	def get_status(self):
 		self.buttons = self.wii.state['buttons']
-		# self.status_button = not pi.read(button)
+		self.status_button = not pi.read(button)
 
 class wiimote_watcher(threading.Thread):
 	""" A wiimote checking thread class """
@@ -187,7 +187,7 @@ class wiimote_watcher(threading.Thread):
 def main():
 	# Class instance and program run
 	skate = Skateboard()
-	# skate.blinky(20,0.05)
+	skate.blinky(20,0.05)
 	skate.connection_process()
 	# Wiimote checker thread
 	checker = wiimote_watcher()
