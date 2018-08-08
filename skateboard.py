@@ -109,7 +109,7 @@ class Skateboard(object):
 		# pi.write(led, 1)
 		while (stop_val == False):
 			print("Running Process.")
-			# self.get_status()
+			self.get_status()
 			# if self.status_button:
 			# 	print("shutdown")
 			# 	self.wii.rumble=1
@@ -132,7 +132,7 @@ class Skateboard(object):
 				print("UP")
 			if (self.buttons & cwiid.BTN_PLUS):
 				print("plus")
-				stop_val = True
+				# stop_val = True
 				# Skateboard.accel_sleep += 0.005
 				# time.sleep(0.5)
 				# if Skateboard.accel_sleep >= 0.1:
@@ -146,13 +146,12 @@ class Skateboard(object):
 				# 	Skateboard.accel_sleep = 0
 				# print(Skateboard.accel_sleep)
 			print("Speed is: " + self.speed)
-		print("We stopped ;_;")
 		# self.speed = 1500 #If the board defaults, set the speed to neutral
 
-	# def get_status(self):
-	# 	print("shutdown")
-	# 	self.buttons = self.wii.state['buttons']
-	# 	self.status_button = not pi.read(button)
+	def get_status(self):
+		print("shutdown get_status")
+		self.buttons = self.wii.state['buttons']
+		# self.status_button = not pi.read(button)
 
 class wiimote_watcher(threading.Thread):
 	""" A wiimote checking thread class """
@@ -169,8 +168,8 @@ class wiimote_watcher(threading.Thread):
         	return command
 
 	def motor_off(self):
-		global stop_val
-        	stop_val = True # Causes main thread loop to stop working and speed to default
+		# global stop_val
+        # 	stop_val = True # Causes main thread loop to stop working and speed to default
 
 	def shutdown(self):
 		self.motor_off()
