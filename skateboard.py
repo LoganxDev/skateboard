@@ -168,8 +168,8 @@ class wiimote_watcher(threading.Thread):
         	return command
 
 	def motor_off(self):
-		# global stop_val
-        # 	stop_val = True # Causes main thread loop to stop working and speed to default
+		global stop_val
+        	stop_val = True # Causes main thread loop to stop working and speed to default
 
 	def shutdown(self):
 		self.motor_off()
